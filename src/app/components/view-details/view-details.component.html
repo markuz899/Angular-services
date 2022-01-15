@@ -1,0 +1,91 @@
+<div *ngIf="viewMode; else editable">
+  <div *ngIf="currentView.id">
+    <h4>View details</h4>
+    <div>
+      <label><strong>Title:</strong></label> {{ currentView.title }}
+    </div>
+    <div>
+      <label><strong>body:</strong></label>
+      {{ currentView.body }}
+    </div>
+    <div>
+      <label><strong>Status:</strong></label>
+      {{ currentView.published ? "Published" : "Pending" }}
+    </div>
+
+    <a class="badge badge-warning" routerLink="/view/{{ currentView.id }}">
+      Edit
+    </a>
+  </div>
+
+  <div *ngIf="!currentView">
+    <br />
+    <p>Please click on a View...</p>
+  </div>
+</div>
+
+<ng-template #editable>
+  <div *ngIf="currentView.id" class="edit-form">
+    <h4>View</h4>
+    <form>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          [(ngModel)]="currentView.title"
+          name="title"
+        />
+      </div>
+      <div class="form-group">
+        <label for="body">body</label>
+        <input
+          type="text"
+          class="form-control"
+          id="body"
+          [(ngModel)]="currentView.body"
+          name="body"
+        />
+      </div>
+
+      <div class="form-group">
+        <label><strong>Status:</strong></label>
+        {{ currentView.published ? "Published" : "Pending" }}
+      </div>
+    </form>
+
+    <button
+      class="badge badge-primary mr-2"
+      *ngIf="currentView.published"
+      (click)="updatePublished(false)"
+    >
+      UnPublish
+    </button>
+    <button
+      *ngIf="!currentView.published"
+      class="badge badge-primary mr-2"
+      (click)="updatePublished(true)"
+    >
+      Publish
+    </button>
+
+    <button class="badge badge-danger mr-2" (click)="deleteView()">
+      Delete
+    </button>
+
+    <button
+      type="submit"
+      class="badge badge-success mb-2"
+      (click)="updateView()"
+    >
+      Update
+    </button>
+    <p>{{ message }}</p>
+  </div>
+
+  <div *ngIf="!currentView.id">
+    <br />
+    <p>Cannot access...</p>
+  </div>
+</ng-template>
